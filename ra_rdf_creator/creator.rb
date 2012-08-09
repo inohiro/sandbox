@@ -1,6 +1,6 @@
 require 'sequel'
 require 'rdf'
-require 'rdf/rdfxml'
+require 'rdf/ntriples'
 require './../../research/olap_etl/util.rb'
 
 def csv_dump( db, tables )
@@ -15,15 +15,10 @@ def csv_dump( db, tables )
   end
 end
 
-require 'pp'
-require 'rdf/ntriples'
-
-def rdf_xml_dump( db, tables )
+def rdf_nt_dump( db, tables )
   tables.each do |table|
     table_name = table.to_sym
-#    file = File.open( "#{table.to_s}.rdf", "w" )
-#    RDF::RDFXML::Writer.open( "#{table.to_s}.rdf" ) do |writer|
-    RDF::Writer.for( :ntriples ).open( "#{table.to_s}.rdf" ) do |writer|
+    RDF::Writer.for( :ntriples ).open( "#{table.to_s}.nt" ) do |writer|
       db[table_name].all.each do |r|
         stm = RDF::Statement.new
         stm.subject = r[:subject]
@@ -46,7 +41,7 @@ def main
   tables = [ 'ev_time', 'observation_instance' ]
 
 #  csv_dump( db, tables )
-  rdf_xml_dump( db, tables )
+  rdf_nt_dump( db, tables )
 end
 
 main
