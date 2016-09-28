@@ -1,0 +1,5 @@
+in:
+  type: file
+  path_prefix: "/Users/hiroyuki-inoue/tmp/embulk_example/stock_trial/csv/stocks_"
+out:
+  type: stdout

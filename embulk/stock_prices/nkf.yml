@@ -1,0 +1,30 @@
+in:
+  type: file
+  path_prefix: /Users/hiroyuki-inoue/tmp/embulk_example/stock_trial/csv/stocks_
+  parser:
+    charset: MS932
+    newline: CRLF
+    type: csv
+    delimiter: ','
+    quote: '"'
+    escape: '"'
+    trim_if_not_quoted: false
+    skip_header_lines: 1
+    allow_extra_columns: false
+    allow_optional_columns: false
+    columns:
+    - {name: コード, type: string}
+    - {name: 銘柄名, type: string}
+    - {name: 市場, type: string}
+    - {name: 始値, type: string}
+    - {name: 高値, type: string}
+    - {name: 安値, type: string}
+    - {name: 終値, type: string}
+    - {name: 出来高, type: long}
+    - {name: 売買代金, type: long}
+out:
+  type: command
+  command: "cat - | nkf -w -Lu > ./utf8/stocks.$INDEX.$SEQID.utf8.csv"
+  # encoders: {type: gzip}
+  formatter:
+    type: csv
